@@ -4,7 +4,7 @@ Group Members:
   - William Mock
   - Christian Tuarez
   - Valary Musibega
-  - Christian Tuarez
+  - Thimothy Moorthy
 
 Description:
   This program is a group project developed by the above-listed group members as part of a collaborative effort.
