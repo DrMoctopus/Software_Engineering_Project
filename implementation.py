@@ -84,7 +84,7 @@ class UserInterface:
         print(updated_data)
 
     def initiate_training(self):
-        training_status = FraudDetectionClass.train_model()
+        training_status = FraudPredictionModel.train_model()
         self.display_training_status(training_status)
 
     def display_training_status(self, training_status):
@@ -128,17 +128,6 @@ class TransactionClass:
         # Implementation missing
         return "Updated transactional data not available."
 
-# FraudDetectionClass
-class FraudDetectionClass:
-    model = None
-
-    @classmethod
-    def train_model(cls):
-        # Train the fraud detection model
-        # Implementation missing
-        cls.model = FraudPredictionModel()
-        return "Model training completed."
-
 # FraudPredictionModel
 class FraudPredictionModel:
     def __init__(self, model_id, model_name):
@@ -159,7 +148,6 @@ class FraudPredictionModel:
 if __name__ == "__main__":
     user_interface = UserInterface()
     # Call the desired methods from the UserInterface class
-    # For example:
     user_interface.request_view_blocklist()
     user_interface.submit_addition("Entry data")
     user_interface.request_removal("Entry ID")
