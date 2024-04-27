@@ -26,7 +26,7 @@ class Administrator(BusinessAnalyst):
                 print("Main Menu (Session ID " + self.get_user_id() + ")")
                 print("-------------------------------------------------------------------------------------------")
                 print("1. View Pending Applications")
-                print("2. View Processed Applications by User")
+                print("2. View Line of Credit Approvals")
                 print("3. View Users")
                 print("4. Modify Approval Thresholds")
                 print("5. Logout")
@@ -40,9 +40,9 @@ class Administrator(BusinessAnalyst):
 
         match option:
             case "1":
-                print("TODO")
+                self.view_applications()
             case "2":
-                print("TODO")
+                self.view_approvals()
             case "3":
                 self.view_users()
             case "4":
@@ -78,13 +78,13 @@ class Administrator(BusinessAnalyst):
 
         match option:
             case "1":
-                self.new_user()
+                self.add_user()
             case "2":
                 self.remove_user()
             case "3":
                 self.main_menu()
 
-    def new_user(self):
+    def add_user(self):
         modified_df = pd.DataFrame({"User ID": [self.enter_user_id()],
                                     "Name": [self.enter_name()],
                                     "Password": [self.enter_password()]})
@@ -100,8 +100,8 @@ class Administrator(BusinessAnalyst):
         interface.sleep_and_clear_screen(1)
         print("New User (Session ID " + self.get_user_id() + ")")
         print("-------------------------------------------------------------------------------------------")
-        input("New user created. Press any key to return to the main menu.")
-        self.main_menu()
+        input("New user created. Press any key to return to the users menu.")
+        self.view_users()
 
     def enter_user_id(self):
         user_id = ""
@@ -109,7 +109,7 @@ class Administrator(BusinessAnalyst):
             condition = False
             while condition is False:
                 interface.sleep_and_clear_screen(1)
-                print("New User (Session ID " + self.get_user_id() + "")
+                print("New User (Session ID " + self.get_user_id() + ")")
                 print("-------------------------------------------------------------------------------------------")
                 user_id = interface.get_input_with_prompt("Enter user ID (valid character plus 4 numbers): ")
                 user_id = str(user_id)
@@ -126,7 +126,7 @@ class Administrator(BusinessAnalyst):
             condition = False
             while condition is False:
                 interface.sleep_and_clear_screen(1)
-                print("New User (Session ID " + self.get_user_id() + "")
+                print("New User (Session ID " + self.get_user_id() + ")")
                 print("-------------------------------------------------------------------------------------------")
                 name = interface.get_input_with_prompt("Enter name (one name, one last name): ")
                 name = str(name)
@@ -143,7 +143,7 @@ class Administrator(BusinessAnalyst):
             condition = False
             while condition is False:
                 interface.sleep_and_clear_screen(1)
-                print("New User (Session ID " + self.get_user_id() + "")
+                print("New User (Session ID " + self.get_user_id() + ")")
                 print("-------------------------------------------------------------------------------------------")
                 password = interface.get_input_with_prompt("Enter password (eight characters minimum): ")
                 password = str(password)
@@ -174,11 +174,11 @@ class Administrator(BusinessAnalyst):
                     condition = option < 0 or option > (df_len - 1)
         except ValueError:
             print("Input is not valid. Please try again.")
-            print("-------------------------------------------------------------------------------------------")
-            input("Press any key to return to the main menu.")
+        print("-------------------------------------------------------------------------------------------")
+        input("Press any key to return to the users menu.")
         sorted_users_df = sorted_users_df.drop(sorted_users_df.index[option])
         self.set_users_df(sorted_users_df)
-        self.main_menu()
+        self.view_users()
 
     def sort_users_df(self):
         sorted_users_df = self.get_users_df().sort_values(by=['User ID'])
@@ -191,13 +191,13 @@ class Administrator(BusinessAnalyst):
             condition = True
             while condition:
                 interface.sleep_and_clear_screen(1)
-                print("Thresholds:")
+                print("Thresholds (Session ID " + self.get_user_id() + ")")
                 print("-------------------------------------------------------------------------------------------")
                 print(self.get_thresholds_df().to_string())
                 print("-------------------------------------------------------------------------------------------")
                 print("1. Modify Credit Score Automatic Rejection Threshold (CSART)")
-                print("2. Modify Debt to Income Ratio Rejection Threshold (DtIRT)")
-                print("3. Modify Positive Flow Ratio Limit for Credit ()")
+                print("2. Modify Debt to Income Ratio Threshold (DtIRT)")
+                print("3. Modify Positive Flow Ratio Limit for Credit (PFRLfC)")
                 print("4. Modify Maximum Credit Limit (MCL)")
                 print("5. Back")
                 print("-------------------------------------------------------------------------------------------")
@@ -205,6 +205,7 @@ class Administrator(BusinessAnalyst):
                 condition = int(option) < 1 or int(option) > 5
         except ValueError:
             print("Input is not valid. Please try again.")
+            self.modify_thresholds()
 
         match option:
             case "1":
@@ -219,23 +220,97 @@ class Administrator(BusinessAnalyst):
                 self.main_menu()
 
     def modify_credit_score_automatic_rejection(self):
-        print("TODO")
+        value = 0
+        try:
+            condition = False
+            while condition is False:
+                interface.sleep_and_clear_screen(1)
+                print("Modify Credit Score Automatic Rejection (CSART) (Session ID " + self.get_user_id() + ")")
+                print("-------------------------------------------------------------------------------------------")
+                value = interface.get_input_with_prompt("Enter a value from 350 to 850: ")
+                print("-------------------------------------------------------------------------------------------")
+                value = int(value)
+                condition = 350 <= value <= 850
+        except TypeError:
+            print("Input is not valid. Please try again.")
+            interface.sleep_and_clear_screen(1)
+            self.modify_credit_score_automatic_rejection()
+        input("Press any key to return to the threshold menu.")
+        modified_df = self.get_thresholds_df()
+        modified_df['CSART'] = value
+        self.set_thresholds_df(modified_df)
+        self.modify_thresholds()
 
     def modify_debt_to_income_ratio_rejection(self):
-        print("TODO")
+        value = 0
+        try:
+            condition = False
+            while condition is False:
+                interface.sleep_and_clear_screen(1)
+                print("Modify Debt to Income Ratio Threshold (DtIRT) (Session ID " + self.get_user_id() + ")")
+                print("-------------------------------------------------------------------------------------------")
+                value = interface.get_input_with_prompt("Enter a positive value up to 1.00: ")
+                print("-------------------------------------------------------------------------------------------")
+                value = float(value)
+                condition = 0 < value <= 1.00
+        except TypeError:
+            print("Input is not valid. Please try again.")
+            interface.sleep_and_clear_screen(1)
+            self.modify_debt_to_income_ratio_rejection()
+        input("Press any key to return to the threshold menu.")
+        modified_df = self.get_thresholds_df()
+        modified_df['DtIRT'] = value
+        self.set_thresholds_df(modified_df)
+        self.modify_thresholds()
 
     def modify_positive_flow_ratio_limit(self):
-        print("TODO")
+        value = 0
+        try:
+            condition = False
+            while condition is False:
+                interface.sleep_and_clear_screen(1)
+                print("Modify Positive Flow Ratio Limit for Credit (PFRLfC) (Session ID " + self.get_user_id() + ")")
+                print("-------------------------------------------------------------------------------------------")
+                value = interface.get_input_with_prompt("Enter a positive value up to 1.00: ")
+                print("-------------------------------------------------------------------------------------------")
+                value = float(value)
+                condition = 0 < value <= 1.00
+        except TypeError:
+            print("Input is not valid. Please try again.")
+            interface.sleep_and_clear_screen(1)
+            self.modify_positive_flow_ratio_limit()
+        input("Press any key to return to the threshold menu.")
+        modified_df = self.get_thresholds_df()
+        modified_df['PFRLfC'] = value
+        self.set_thresholds_df(modified_df)
+        self.modify_thresholds()
 
     def modify_maximum_credit_limit(self):
-        print("TODO")
+        value = 0
+        try:
+            condition = False
+            while condition is False:
+                interface.sleep_and_clear_screen(1)
+                print("Modify Maximum Credit Limit (MCL) (Session ID " + self.get_user_id() + ")")
+                print("-------------------------------------------------------------------------------------------")
+                value = interface.get_input_with_prompt("Enter a positive value: ")
+                print("-------------------------------------------------------------------------------------------")
+                value = int(value)
+                condition = value > 0
+        except TypeError:
+            print("Input is not valid. Please try again.")
+            interface.sleep_and_clear_screen(1)
+            self.modify_maximum_credit_limit()
+        input("Press any key to return to the threshold menu.")
+        modified_df = self.get_thresholds_df()
+        modified_df['MCL'] = value
+        self.set_thresholds_df(modified_df)
+        self.modify_thresholds()
 
     def logout(self):
         interface.sleep_and_clear_screen(1)
-        '''''''''''
         self.get_applications_df().to_csv(interface.APPLICATIONS_FILEPATH, index=False)
         self.get_approvals_df().to_csv(interface.APPROVALS_FILEPATH, index=False)
         self.get_thresholds_df().to_csv(interface.THRESHOLDS_FILEPATH, index=False)
         self.get_users_df().to_csv(interface.AUTHORIZED_USERS_FILEPATH, index=False)
-        '''''''''''
         print("Session finished for ID " + self.get_user_id() + ".")

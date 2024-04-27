@@ -38,6 +38,12 @@ class BusinessAnalyst:
     def main_menu(self):
         print("TODO")
 
+    def view_applications(self):
+        print(self.get_user_id())
+
+    def view_approvals(self):
+        print(self.get_user_id())
+
     def logout(self):
         interface.sleep_and_clear_screen(1)
         '''''''''''
