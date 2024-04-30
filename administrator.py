@@ -174,6 +174,8 @@ class Administrator(BusinessAnalyst):
                     condition = option < 0 or option > (df_len - 1)
         except ValueError:
             print("Input is not valid. Please try again.")
+            interface.sleep_and_clear_screen(1)
+            self.remove_user()
         print("-------------------------------------------------------------------------------------------")
         input("Press any key to return to the users menu.")
         sorted_users_df = sorted_users_df.drop(sorted_users_df.index[option])
@@ -198,8 +200,7 @@ class Administrator(BusinessAnalyst):
                 print("1. Modify Credit Score Automatic Rejection Threshold (CSART)")
                 print("2. Modify Debt to Income Ratio Threshold (DtIRT)")
                 print("3. Modify Positive Flow Ratio Limit for Credit (PFRLfC)")
-                print("4. Modify Maximum Credit Limit (MCL)")
-                print("5. Back")
+                print("4. Back")
                 print("-------------------------------------------------------------------------------------------")
                 option = interface.get_input_with_prompt("Select your option: ")
                 condition = int(option) < 1 or int(option) > 5
@@ -215,8 +216,6 @@ class Administrator(BusinessAnalyst):
             case "3":
                 self.modify_positive_flow_ratio_limit()
             case "4":
-                self.modify_maximum_credit_limit()
-            case "5":
                 self.main_menu()
 
     def modify_credit_score_automatic_rejection(self):
@@ -282,28 +281,6 @@ class Administrator(BusinessAnalyst):
         input("Press any key to return to the threshold menu.")
         modified_df = self.get_thresholds_df()
         modified_df['PFRLfC'] = value
-        self.set_thresholds_df(modified_df)
-        self.modify_thresholds()
-
-    def modify_maximum_credit_limit(self):
-        value = 0
-        try:
-            condition = False
-            while condition is False:
-                interface.sleep_and_clear_screen(1)
-                print("Modify Maximum Credit Limit (MCL) (Session ID " + self.get_user_id() + ")")
-                print("-------------------------------------------------------------------------------------------")
-                value = interface.get_input_with_prompt("Enter a positive value: ")
-                print("-------------------------------------------------------------------------------------------")
-                value = int(value)
-                condition = value > 0
-        except TypeError:
-            print("Input is not valid. Please try again.")
-            interface.sleep_and_clear_screen(1)
-            self.modify_maximum_credit_limit()
-        input("Press any key to return to the threshold menu.")
-        modified_df = self.get_thresholds_df()
-        modified_df['MCL'] = value
         self.set_thresholds_df(modified_df)
         self.modify_thresholds()
 

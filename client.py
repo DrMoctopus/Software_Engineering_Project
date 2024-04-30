@@ -55,16 +55,19 @@ class Client:
                 self.logout()
 
     def new_application(self):
-        modified_df = pd.DataFrame({"Timestamp": [interface.get_pandas_timestamp()],
-                                    "Name": [self.get_name()],
-                                    "User ID": [self.get_user_id()],
-                                    "SSN": [self.enter_ssn()],
-                                    "Monthly Income": [self.enter_monthly_income()],
-                                    "Monthly Debts": [self.enter_monthly_debts()],
-                                    "Credit Score": -1,
-                                    "Approval Status": "Pending",
-                                    "Approved by ID": "System"})
-        modified_df = pd.concat([self.get_applications_df(), modified_df], ignore_index=True)
+        new_row = pd.DataFrame({"Timestamp": [interface.get_pandas_timestamp()],
+                                "Name": [self.get_name()],
+                                "User ID": [self.get_user_id()],
+                                "SSN": [self.enter_ssn()],
+                                "Monthly Income": [self.enter_monthly_income()],
+                                "Monthly Debts": [self.enter_monthly_debts()],
+                                "Credit Score": -1,
+                                "Approval Status": "Pending",
+                                "Approved by ID": "System"})
+        modified_df = self.get_applications_df()
+        modified_df['Timestamp'] = pd.to_datetime(modified_df['Timestamp'])
+        modified_df = pd.concat([modified_df, new_row], ignore_index=True)
+        modified_df['Timestamp'] = pd.to_datetime(modified_df['Timestamp'])
         modified_df = modified_df.sort_values(by='Timestamp', ascending=False)
         modified_df = modified_df.reset_index(drop=True)
         self.set_applications_df(modified_df)
@@ -83,7 +86,7 @@ class Client:
                 print("New Application for " + self.get_name())
                 print("-------------------------------------------------------------------------------------------")
                 ssn = interface.get_input_with_prompt("Enter SSN (include hyphens): ")
-                ssn = int(ssn)
+                ssn = str(ssn)
                 condition = interface.validate_ssn(ssn)
         except TypeError:
             print("Input is not valid. Please try again.")

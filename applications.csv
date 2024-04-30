@@ -1,1 +1,5 @@
 Timestamp,Name,User ID,SSN,Monthly Income,Monthly Debts,Credit Score,Approval Status,Approved by ID
+2024-04-27 09:21:15,Sam Thompson,C00004,349-24-3474,4000,1500,676,Approved,B00001
+2024-04-27 09:19:56,Roger Carlson,C00003,187-45-2049,2000,1800,550,Rejected,B00001
+2024-04-27 09:18:31,Sergio Salas,C00002,563-49-8901,10000,1000,392,Rejected,B00001
+2024-04-27 08:58:38,Stan Woodward,C00001,456-74-3821,2000,1000,725,Rejected,B00001

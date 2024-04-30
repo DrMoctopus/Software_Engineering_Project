@@ -18,8 +18,7 @@ CREDIT_SCORES_COLUMNS = ["SSN",
                          "Credit Score"]
 THRESHOLDS_COLUMNS = ["CSART",
                       "DtIRT",
-                      "PFRLfC",
-                      "MCL"]
+                      "PFRLfC"]
 APPLICATIONS_COLUMNS = ["Timestamp",
                         "Name",
                         "User ID",
@@ -49,8 +48,7 @@ def sleep_and_clear_screen(secs=1):
 
 
 def get_pandas_timestamp():
-    current_datetime = datetime.now()
-    current_datetime = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     timestamp = pd.Timestamp(current_datetime)
     return timestamp
 
@@ -92,7 +90,6 @@ def login_prompt(users_list_df):
 
     filtered_df = users_list_df[users_list_df['User ID'] == user_id]
     name = filtered_df['Name'].values[0]
-    filtered_df = users_list_df[users_list_df['User ID'] == user_id]
     print(f"\nLogin successful! Welcome, {name}!")
     return name, user_id
 

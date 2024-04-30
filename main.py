@@ -23,6 +23,7 @@ if __name__ == '__main__':
                                                         credit_scores_df,
                                                         thresholds_df,
                                                         users_df)
+            session_admin.application_preprocessing()
             session_admin.main_menu()
         case 'B':
             interface.sleep_and_clear_screen(1)
@@ -32,11 +33,12 @@ if __name__ == '__main__':
                                                                approvals_df,
                                                                credit_scores_df,
                                                                thresholds_df)
+            session_employee.application_preprocessing()
             session_employee.main_menu()
         case 'C':
             interface.sleep_and_clear_screen(1)
-            session_customer = client.Client(name,
-                                             user_id,
-                                             applications_df,
-                                             approvals_df)
-            session_customer.main_menu()
+            session_client = client.Client(name,
+                                           user_id,
+                                           applications_df,
+                                           approvals_df)
+            session_client.main_menu()
